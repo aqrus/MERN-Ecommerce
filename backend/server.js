@@ -15,3 +15,6 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`server started on port ${process.env.PORT} in ${process.env.NODE_ENV}`)
 })
+app.use(function (err, req, res, next) {
+    res.status(500).send(err)
+})
