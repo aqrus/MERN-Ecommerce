@@ -17,6 +17,7 @@ const getProduct = asyncHandler(async (req, res, next) => {
     })
 });
 const newProduct = asyncHandler(async (req, res) => {
+    req.body.user = req.user.id;
     const product = await Product.create(req.body);
     res.send({
         succes: true,
