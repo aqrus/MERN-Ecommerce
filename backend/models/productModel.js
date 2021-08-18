@@ -17,10 +17,6 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Plese enter product description'],
     },
-    ratings: {
-        type: Number,
-        default: 0
-    },
     images: [
         {
             public_id: {
@@ -62,15 +58,33 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    ratings: {
+        type: Number,
+        default: 0
+    },
     numOfReviews: {
         type: Number,
-        default: true
+        default: 0
     },
     reviews: [
         {
-            name: { type: String },
-            rating: {type: Number },
-            comment: {type: String}
+            user: {
+                type: mongoose.Schema.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            rating: {
+                type: Number,
+                required: true
+            },
+            comment: {
+                type: String,
+                required: true
+            }
         }
     ],
     user: {
