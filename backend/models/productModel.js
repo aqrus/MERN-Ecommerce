@@ -72,7 +72,12 @@ const productSchema = new mongoose.Schema({
             rating: {type: Number },
             comment: {type: String}
         }
-    ]
+    ],
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    }
 }, 
 {
     timestamps: true
