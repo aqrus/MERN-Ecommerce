@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/aqrus/MERN-Ecommerce#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
@@ -29,6 +30,15 @@
     "mongoose": "^5.13.3",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
+    "react-alert": "^7.0.3",
+    "react-alert-template-basic": "^1.0.2",
+    "react-bootstrap": "^1.6.1",
+    "react-helmet": "^6.1.0",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.1.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
     "validator": "^13.6.0"
   }
 }
