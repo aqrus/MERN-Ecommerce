@@ -81,4 +81,61 @@ footer {
   bottom: 0;
   width: 100%;
 }
+/* Loader */
+
+.loader {
+  display: block;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20%;
+  padding-left: 0;
+
+  width: 80px;
+  height: 80px;
+}
+.loader:after {
+  content: '';
+  display: block;
+
+  width: 60px;
+  height: 60px;
+
+  border: 6px solid #fa9c23;
+  border-radius: 50%;
+  border-color: #fa9c23 transparent;
+  
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Ratings */
+
+.rating-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+  color: #fdcc0d;
+}
+.rating-outer::before {
+  content: '\f006 \f006 \f006 \f006 \f006';
+}
+.rating-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+.rating-inner::before {
+  content: '\f005 \f005 \f005 \f005 \f005';
+  color: #f8ce0b;
+}
 

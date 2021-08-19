@@ -1,10 +1,13 @@
 const Product = require('../models/productModel');
 const asyncHandler = require('express-async-handler');
 
-const getAllProducts = asyncHandler(async (req, res) => {
+const getAllProducts = asyncHandler(async (req, res, next) => {
+
     const products = await Product.find({});
-    res.status(200).send(products)
+    res.status(200).send(products);
+
 });
+
 const getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if(product) {
@@ -16,6 +19,7 @@ const getProduct = asyncHandler(async (req, res, next) => {
         message: "Product Not Faund"
     })
 });
+
 const newProduct = asyncHandler(async (req, res) => {
     req.body.user = req.user.id;
     const product = await Product.create(req.body);
@@ -24,6 +28,7 @@ const newProduct = asyncHandler(async (req, res) => {
         product
     })
 });
+
 const updateProduct = asyncHandler(async (req, res) => {
     let product = await Product.findById(req.params.id);
     if(!product){
@@ -45,6 +50,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     }
     
 })
+
 const deleteProduct = asyncHandler(async (req, res) => {
     let product = await Product.findById(req.params.id);
     if(!product){
@@ -61,6 +67,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     }
     
 })
+
 const seedProduct = asyncHandler(async (req, res) => {
     const product = await Product.insertMany(req.body);
     res.send({
