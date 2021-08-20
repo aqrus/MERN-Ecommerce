@@ -1,7 +1,8 @@
-import { getProducts } from './productActions';
+import { getProducts, getProductDetails } from './productActions';
 
 const actions = {
-    getProducts
+    getProducts,
+    getProductDetails
 }
 
 export default actions

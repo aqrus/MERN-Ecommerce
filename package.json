@@ -28,6 +28,7 @@
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.3",
+    "mongoose-paginate-v2": "^1.4.2",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.12",
     "react-alert": "^7.0.3",

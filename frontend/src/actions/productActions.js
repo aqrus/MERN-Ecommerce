@@ -23,6 +23,28 @@ const getProducts = () => async (dispatch) => {
     }
 }
 
+const getProductDetails = (id) => async (dispatch) => {
+    
+    try {
+
+        dispatch({ type: productConstants.PRODUCTS_DETAIL_REQUEST});
+
+        const { data }  = await axios.get(`/api/v1/products/${id}`);
+        dispatch({
+            payload: data,
+            type: productConstants.PRODUCTS_DETAIL_SUCCESS
+        });
+
+    } catch (error) {
+
+        dispatch({
+            payload: error.response.data.message,
+            type: productConstants.PRODUCTS_DETAIL_FALSE
+        });
+
+    }
+}
 export {
-    getProducts
+    getProducts,
+    getProductDetails
 }

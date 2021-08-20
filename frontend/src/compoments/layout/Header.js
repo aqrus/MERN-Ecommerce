@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
     return (
@@ -6,7 +7,9 @@ export default function Header() {
             <nav className="navbar row">
                 <div className="col-12 col-md-3">
                     <div className="navbar-brand">
-                        <img src="/images/shopit_logo.png" alt="" />
+                        <Link to="/">
+                            <img src="/images/shopit_logo.png" alt="" />
+                        </Link>
                     </div>
                 </div>
                 <div className="col-12 col-md-6 mt-2 mt-md-0">

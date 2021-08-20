@@ -4,12 +4,13 @@ import { BlockProduct, Loader } from './index';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import actions from '../../actions';
+import ReactPaginate from 'react-paginate';
 
 export default function Home() {
 
     const dispatch = useDispatch();
     const alert = useAlert();
-    const { loading, products, error } = useSelector(state => state.products);
+    const { loading, products, pageCount, error } = useSelector(state => state.products);
 
     useEffect(() => {
 
@@ -36,6 +37,23 @@ export default function Home() {
                                     </div>
                                 )) : <div></div>
                             }
+                        </div>
+                        <div className="d-flex justify-content-around">
+                            <ReactPaginate 
+                                pageCount = {pageCount}
+                                pageRangeDisplayed = { 3 }
+                                marginPagesDisplayed = { 2 }
+                                containerClassName = "pagination"
+                                pageClassName = "page-item"
+                                pageLinkClassName = "page-link"
+                                activeClassName = "page-item active"
+                                activeLinkClassName = "page-link"
+                                previousClassName = "page-item"
+                                nextClassName ="page-item"
+                                previousLinkClassName = "page-link"
+                                nextLinkClassName = "page-link"
+                                disabledClassName ="disabled"
+                            />
                         </div>
                         </>
                     )

@@ -3,8 +3,34 @@ const asyncHandler = require('express-async-handler');
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
 
-    const products = await Product.find({});
-    res.status(200).send(products);
+    const { min, max } = req.query;
+
+    const pageSize = req.query.pageSize || 8;
+    const pageNumber = req.query.pageNumber || 1;
+    const keyword = req.query.keyword || "";
+    const category = req.query.category || "";
+    const filterPrice = min && max ? { price: { '$gte': min, '$lt': max } } : {};
+    
+    const { docs, totalDocs, page, limit, totalPages } = await Product.paginate(
+        {   
+            name: { $regex: new RegExp(keyword), $options: "i" },
+            category: { $regex: new RegExp(category), $options: "i"  },
+            ...filterPrice
+        }, 
+        { 
+            limit: pageSize , page: pageNumber,
+            sort: ({ ratings: -1 })
+        },
+    );
+
+    res.status(200).send(
+        {
+            products: docs,
+            pageCount: totalDocs,
+            page: page,
+            limit: limit,
+            totalPages: totalPages
+        });
 
 });
 
