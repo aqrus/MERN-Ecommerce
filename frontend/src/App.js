@@ -1,5 +1,5 @@
 import './App.css';
-import { Footer, Header, Home } from './compoments/layout';
+import { Footer, Header, Home, DetailProduct } from './compoments/layout';
 import { BrowserRouter, Route } from 'react-router-dom';
 function App() {
 	return (
@@ -8,6 +8,8 @@ function App() {
 				<Header />
 				<div className="container container-fluid">
 					<Route path="/" exact component={Home}></Route>
+					<Route path="/search/:keyword" component={Home}></Route>
+					<Route path="/product/:id" component={DetailProduct}></Route>
 				</div>
 				<Footer />
 			</div>
