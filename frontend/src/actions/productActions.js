@@ -1,13 +1,14 @@
 const axios = require('axios');
 const productConstants = require('../constant/producConstants');
 
-const getProducts = () => async (dispatch) => {
-    
+const getProducts = ( pageInfo ) => async (dispatch) => {
+    const { curentPage, keyword, price, category, ratings } = pageInfo;
+
     try {
 
         dispatch({ type: productConstants.PRODUCTS_LIST_REQUEST});
 
-        const { data }  = await axios.get('/api/v1/products');
+        const { data }  = await axios.get(`/api/v1/products?pageNumber=${ curentPage }&keyword=${ keyword }&min=${ price[0] }&max=${ price[1] }&category=${category}&rating=${ratings}`);
         dispatch({
             payload: data,
             type: productConstants.PRODUCTS_LIST_SUCCESS

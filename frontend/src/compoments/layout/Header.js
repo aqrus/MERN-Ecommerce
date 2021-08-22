@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+import { Search } from './';
 
 export default function Header() {
+
     return (
         <Fragment>
             <nav className="navbar row">
@@ -13,23 +15,8 @@ export default function Header() {
                     </div>
                 </div>
                 <div className="col-12 col-md-6 mt-2 mt-md-0">
-                    <div className="input-group">
-                        <input type="text"
-                            className="form-control" 
-                            name="search_field" 
-                            id="search_field" 
-                            placeholder="Enter product name ..."
-                        />
-                        <span className="input-group-btn">
-                            <button 
-                                className="btn btn-secondary" 
-                                type="button"
-                                id="search_btn"
-                            >
-                                <i className="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                        </span>
-                    </div>
+                    <Route render={ ({ history }) => <Search history={ history }/>}></Route>
+                    
                 </div>
                 <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
                         <button id="login_btn" type="button" className="btn">Login</button>

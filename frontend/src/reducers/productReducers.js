@@ -12,7 +12,8 @@ const productsReducers = (state = { products: [] }, action) => {
             return {
                 loading: false,
                 products: action.payload.products,
-                pageCount: action.payload.totalDocs
+                page: action.payload.page,
+                totalPages: action.payload.totalPages
             }
         case productConstants.PRODUCTS_LIST_FALSE:
             return {
