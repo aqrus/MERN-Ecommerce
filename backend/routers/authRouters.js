@@ -9,10 +9,10 @@ router.route('/login').post(auth.loginUser);
 router.route('/logout').get(auth.logoutUser);
 
 router.route('/me').get(isAuthenticatedUser, auth.getUserProfile);
-router.route('/me/update').post(isAuthenticatedUser, auth.updateUserProfile);
+router.route('/me/update').put(isAuthenticatedUser, auth.updateUserProfile);
 
 router.route('/password/forgot').post(auth.forgotPassword);
-router.route('/password/update').post(isAuthenticatedUser, auth.updatePassword);
+router.route('/password/update').put(isAuthenticatedUser, auth.updatePassword);
 router.route('/password/reset/:token').put(auth.resetPassword);
 
 router.route('/admin/users').get(isAuthenticatedUser, authorizeRoles('admin'), auth.getAllUsers);
