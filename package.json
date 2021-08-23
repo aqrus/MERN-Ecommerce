@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
-    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "dev": "SET NODE_ENV=DEVELOPMENT& nodemon --inspect backend/server",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon backend/server"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "express-fileupload": "^1.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.3",
     "mongoose-paginate-v2": "^1.4.2",

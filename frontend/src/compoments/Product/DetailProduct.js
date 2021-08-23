@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import MetaData from '../MetaData';
-import actions from '../../../actions'
-import { Loader } from '../index';
+import actions from '../../actions'
+import { Loader, MetaData} from '../index';
 import { Carousel } from 'react-bootstrap';
 export default function DetailProduct(props) {
 

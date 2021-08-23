@@ -3,21 +3,40 @@ const asyncHandler = require('express-async-handler');
 const sendEmail = require('../utils/sendEmail');
 const sendToken = require('../utils/jwtToken');
 const crypto = require('crypto');
+const path = require('path');
 
 const registerUser = asyncHandler(async (req, res) => {
     const { email, name, password } = req.body;
 
-    const user = await User.create({
-        name,
-        email,
-        password,
-        avatar: {
-            public_id: 'bae36437168d3dbc3de89c6f193602a3',
-            url: 'https://i.pinimg.com/474x/ba/e3/64/bae36437168d3dbc3de89c6f193602a3.jpg'
-        }
-    })
+    if (!req.files || Object.keys(req.files).length === 0) {
+        res.status(400).send({
+            message: 'No files were uploaded'
+        });
+    }
+    
+    if( req.files ) {
 
-    sendToken(user, 200, res)
+        const file = req.files.avatar;
+        var fileName = file.name;
+        var uploadPath = path.parse(__dirname).dir+'/uploads/image/' + fileName;
+
+        const user = await User.create({
+            name,
+            email,
+            password,
+            avatar: {
+                public_id: fileName,
+                url: uploadPath
+            }
+        })
+        if(user){
+            file.mv( uploadPath, (err) => {
+                if (err)
+                    return res.status(500).send(err)
+            })
+            sendToken(user, 200, res)
+        }
+    }
 })
 
 //Forgot password => api/v1/auth/password/forgot
@@ -38,7 +57,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     await user.save({validateBeforeSave: false});
 
     //create url password url
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/password/reset/${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
     const message = `Your password reset token is as folow:\n\n${resetUrl}\n\nIf you have not requested this email, then ignore it`
 
@@ -59,7 +78,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
         user.resetPasswordExpire = undefined;
 
         await user.save({validateBeforeSave: false});
-        res.status(500).send(error.message)
+        res.status(500).send({
+            message: error.message
+        })
     }
 })
 
@@ -98,7 +119,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     sendToken(user, 200, res)
 })
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = asyncHandler(async (req, res, next) => {
 
     const { email, password } = req.body;
     if(!email || !password) {
@@ -109,19 +130,20 @@ const loginUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email }).select('+password');
 
     if(!user) {
-        res.status(401).send({
+        res.status(404).send({
             message: "invalid email"
         })
+        next()
     }
 
     const isComparePassword = await user.comparePassword(password);
     if(!isComparePassword) {
-        res.status(401).send({
-            message: 'invalid email password'
+        res.status(404).send({
+            message: 'invalid password'
         });
+    }else {
+        sendToken(user, 200, res)
     }
-
-    sendToken(user, 200, res)
 })
 
 //Get curently user detail => api/v1/auth/me
@@ -134,19 +156,19 @@ const getUserProfile = asyncHandler(async (req, res) => {
 })
 
 //Update/change password user => api/v1/auth/password/update
-const updatePassword = asyncHandler(async (req, res) => {
+const updatePassword = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user.id).select('+password');
 
     const isMatched = await user.comparePassword(req.body.oldPassword);
     if(!isMatched){
-        res.send({
+        res.status(404).send({
             message: 'password is not match'
         })
+    } else {
+        user.password = req.body.password;
+        await user.save();
+        sendToken(user, 200, res)
     }
-
-    user.password = req.body.password;
-    await user.save();
-    sendToken(user, 200, res)
 })
 
 // Update user profile  => api/v1/auth/me/update
@@ -156,7 +178,22 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         email: req.body.email
     };
 
-    //update avartar: after
+    if( req.files ) {
+
+        const file = req.files.avatar;
+        var fileName = file.name;
+        var uploadPath = path.parse(__dirname).dir+'/uploads/image/' + fileName;
+
+        file.mv( uploadPath, (err) => {
+            if (err)
+                return res.status(500).send(err)
+        })
+        
+        newUserData.avatar = {
+            public_id: file.name,
+            url: path.parse(__dirname).dir+'/uploads/image/' + fileName
+        }
+    }
 
     user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new: true,

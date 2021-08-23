@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import MetaData from './MetaData';
-import { BlockProduct, Loader } from './index';
+import { BlockProduct, Loader, MetaData } from '../index';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import actions from '../../actions';

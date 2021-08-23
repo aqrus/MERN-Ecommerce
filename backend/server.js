@@ -9,12 +9,11 @@ dotenv.config({
 //connecting database
 connectDatabase();
 
-app.get('/', (req, res) => {
-    res.send('server is running');
-})
 app.listen(process.env.PORT, () => {
     console.log(`server started on port ${process.env.PORT} in ${process.env.NODE_ENV}`)
 })
 app.use(function (err, req, res, next) {
-    res.status(500).send(err)
+    res.status(500).send({
+        message: err.message
+    })
 })
