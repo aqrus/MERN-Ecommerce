@@ -1,4 +1,5 @@
-import { addToCart, removeCartItems } from './cartActions';
+import { addToCart, removeCartItems, saveShippingInfo } from './cartActions';
+import { createOrder } from './orderActions';
 import { getProducts, getProductDetails } from './productActions';
 import { userLogin, userRegister, loadUser, logoutUser, updateProfile, updatePassword, clearError, forgotPassword, resetPassword } from './userActions'
 const actions = {
@@ -14,7 +15,9 @@ const actions = {
     forgotPassword,
     resetPassword,
     addToCart,
-    removeCartItems
+    removeCartItems,
+    saveShippingInfo,
+    createOrder
 }
 
 export default actions

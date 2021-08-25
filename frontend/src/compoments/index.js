@@ -13,8 +13,11 @@ import ProtectedRoute from './route/ProtectedRoute';
 import UpdateProfile from './user/UpdateProfile';
 import UpdatePassword from './user/UpdatePassword';
 import ForgotPassword from './user/ForgotPassword';
-import NewPassword from './user/NewPassword'
-import Cart from './cart/Cart'
+import NewPassword from './user/NewPassword';
+import Cart from './cart/Cart';
+import Shipping from './cart/Shipping';
+import ConfirmOrder from './cart/ConfirmOrder';
+import Payment from './cart/Payment';
 
 export {
     Footer,
@@ -33,5 +36,8 @@ export {
     UpdatePassword,
     ForgotPassword,
     NewPassword,
-    Cart
+    Cart,
+    Shipping,
+    ConfirmOrder,
+    Payment
 }

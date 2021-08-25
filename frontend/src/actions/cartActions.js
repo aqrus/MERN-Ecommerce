@@ -30,3 +30,15 @@ export const removeCartItems = (productId) => (dispatch, getState) => {
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
 
 }
+
+export const saveShippingInfo = (shipping) => (dispatch, getState) => {
+
+    dispatch({
+        type: cartConstants.SAVE_SHIPPING_INFO,
+        payload: shipping
+    })
+
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+    localStorage.setItem('shippingInfo', JSON.stringify(getState().cart.shippingInfo))
+
+}

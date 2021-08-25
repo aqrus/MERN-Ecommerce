@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 
-export default function Cart() {
+export default function Cart(props) {
 
     const { cartItems } = useSelector(state => state.cart);
 
@@ -28,7 +28,7 @@ export default function Cart() {
     }
 
     const checkoutHandler = () => {
-
+        props.history.push('/login?redirect=shipping');
     }
 
     const removeCartItemHandler = (productId) => {
