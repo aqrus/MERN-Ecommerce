@@ -2,7 +2,8 @@ import './App.css';
 import { Footer, Header, Home, DetailProduct, 
 		Login, Register, Profile, ProtectedRoute, 
 		UpdateProfile, UpdatePassword, 
-		ForgotPassword, NewPassword 
+		ForgotPassword, NewPassword,
+		Cart
 } from './compoments';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -22,6 +23,7 @@ function App() {
 				<div className="container container-fluid">
 					<Route path="/" exact component={Home}></Route>
 					<Route path="/login" component={Login}></Route>
+					<Route path="/cart" component={Cart}></Route>
 					<Route path="/password/forgot" component={ ForgotPassword }></Route>
 					<Route path="/password/reset/:token" component={ NewPassword }></Route>
 					<ProtectedRoute path="/me" component={ Profile } exact ></ProtectedRoute>

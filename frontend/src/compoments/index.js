@@ -14,6 +14,7 @@ import UpdateProfile from './user/UpdateProfile';
 import UpdatePassword from './user/UpdatePassword';
 import ForgotPassword from './user/ForgotPassword';
 import NewPassword from './user/NewPassword'
+import Cart from './cart/Cart'
 
 export {
     Footer,
@@ -31,5 +32,6 @@ export {
     UpdateProfile,
     UpdatePassword,
     ForgotPassword,
-    NewPassword
+    NewPassword,
+    Cart
 }
