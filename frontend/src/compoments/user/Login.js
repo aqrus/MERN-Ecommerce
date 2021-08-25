@@ -15,9 +15,10 @@ export default function Login(props) {
     const dispatch = useDispatch();
     const alert = useAlert();
 
+    const redirect = props.location.search ? props.location.search.split('=')[1] : '/'
     useEffect(() => {
         if (isAuthenticated) {
-            props.history.push('/');
+            props.history.push(redirect);
         }
         if (error) {
             return alert.error(error)
