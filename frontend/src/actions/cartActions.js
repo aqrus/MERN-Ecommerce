@@ -42,3 +42,11 @@ export const saveShippingInfo = (shipping) => (dispatch, getState) => {
     localStorage.setItem('shippingInfo', JSON.stringify(getState().cart.shippingInfo))
 
 }
+
+export const resetCart = () => async (dispatch) => {
+
+    dispatch({
+        type: cartConstants.RESET_CART
+    })
+
+}

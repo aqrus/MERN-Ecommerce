@@ -10,6 +10,7 @@ productRouter.delete('/review', isAuthenticatedUser, productControllers.deletePr
 productRouter.get('/review/:id', isAuthenticatedUser, productControllers.getProductReviews);
 
 productRouter.post('/admin/new', isAuthenticatedUser, authorizeRoles('admin'), productControllers.newProduct);
+productRouter.get('/admin', isAuthenticatedUser, authorizeRoles('admin'), productControllers.getAdminProducts);
 productRouter.put('/admin/:id', isAuthenticatedUser, authorizeRoles('admin'), productControllers.updateProduct);
 productRouter.delete('/admin/:id', isAuthenticatedUser, authorizeRoles('admin'), productControllers.deleteProduct);
 

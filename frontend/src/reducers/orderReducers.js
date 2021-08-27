@@ -23,6 +23,7 @@ export const newOrderReducer = (state = {}, action) => {
                 loading: false,
                 error: action.payload
             }
+
         case orderConstans.CLEAR_ERROR:
 
             return {
@@ -30,8 +31,66 @@ export const newOrderReducer = (state = {}, action) => {
                 ...state,
                 error: null
             }
-
         default:
             return state;
+    }
+}
+
+export const myOrderReducers = (state = { orders: [] }, action) => {
+
+    switch (action.type) {
+
+        case orderConstans.MY_ORDER_REQUEST:
+            
+            return {
+                loading: true,
+            };
+        
+        case orderConstans.MY_ORDER_SUCCESS:
+
+            return {
+                loading: false,
+                orders: action.payload
+            };
+
+        case orderConstans.MY_ORDER_FALSE:
+           
+            return {
+                loading: false,
+                error: action.payload
+            };
+
+        default:
+           return state;
+
+    }
+}
+
+export const detailOrderReducers = (state = { order:{}}, action) => {
+
+    switch (action.type) {
+
+        case orderConstans.DETAIL_ORDER_REQUEST:
+            
+            return {
+                loading: true,
+            };
+        
+        case orderConstans.DETAIL_ORDER_SUCCESS:
+
+            return {
+                loading: false,
+                order: action.payload
+            };
+
+        case orderConstans.DETAIL_ORDER_FALSE:
+           
+            return {
+                ...state,
+                error: action.payload
+            };
+
+        default:
+           return state;
     }
 }

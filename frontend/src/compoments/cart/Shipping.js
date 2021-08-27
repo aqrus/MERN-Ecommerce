@@ -13,7 +13,7 @@ export default function Shipping(props) {
     const [address, setAddress] = useState(shippingInfo.address);
     const [city, setCity] = useState(shippingInfo.city);
     const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
-    const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
+    const [phoneNo, setPhoneNo] = useState(shippingInfo.phone);
     const [country, setCountry] = useState(shippingInfo.country);
 
     const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function Shipping(props) {
 
         dispatch(actions.saveShippingInfo(shipping))
 
-        props.history.push('/order/confirm');
+        props.history.push('/orders/confirm');
     }
     return (
         <>
