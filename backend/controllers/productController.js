@@ -36,6 +36,17 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
 
 });
 
+// All productAdmin => 
+const getAdminProducts = asyncHandler(async (req, res) => {
+    
+    const products = await Product.find();
+
+    res.status(200).send({
+            products: products,
+        });
+
+});
+
 const getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if(product) {
@@ -154,7 +165,7 @@ const getProductReviews = asyncHandler(async (req, res, next) => {
         res.status(404).send({
             message: "Product not found with id"
         })
-        next()
+        return ;
     }
     
     res.status(200).send({
@@ -205,5 +216,6 @@ module.exports = {
     deleteProduct,
     createProductReviews,
     getProductReviews,
-    deleteProductReview
+    deleteProductReview,
+    getAdminProducts
 }

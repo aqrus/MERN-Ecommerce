@@ -91,7 +91,13 @@ export default function Payment(props) {
                     }
 
                     dispatch(actions.createOrder(order));
-                    props.history.push('/order/success');
+                    props.history.push('/orders/success');
+
+                    localStorage.removeItem('cartItems');
+                    localStorage.removeItem('shippingInfo');
+                    localStorage.removeItem('orderInfo');
+
+                    dispatch(actions.resetCart())
 
                 } else {
                     alert.error('there is some issue while payment processing');
@@ -101,8 +107,7 @@ export default function Payment(props) {
             
         } catch (error) {
             document.querySelector('#pay_btn').disable = false;
-            alert.error(error.response)
-
+            alert.error(error)
         }
     }
     return (

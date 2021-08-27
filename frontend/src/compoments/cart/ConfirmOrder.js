@@ -23,7 +23,7 @@ export default function ConfirmOrder({history}) {
             totalPrice
         }
         localStorage.setItem('orderInfo', JSON.stringify(data));
-        history.push('/order/payment')
+        history.push('/orders/payment')
     }
 
     return (
@@ -36,7 +36,7 @@ export default function ConfirmOrder({history}) {
 
                     <h4 className="mb-3">Shipping Info</h4>
                     <p><b>Name:</b> {user && user.name}</p>
-                    <p><b>Phone:</b> {shippingInfo.phoneNo}</p>
+                    <p><b>Phone:</b> {shippingInfo.phone}</p>
                     <p className="mb-4"><b>Address:</b> {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}</p>
 
                     <hr />

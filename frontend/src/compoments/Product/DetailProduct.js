@@ -2,31 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 import actions from '../../actions'
-import { Loader, MetaData} from '../index';
+import { Loader, MetaData } from '../index';
 import { Carousel } from 'react-bootstrap';
+import { PRODUCTS_REVIEW_RESET } from '../../constant/productConstants';
+import ListReviews from './ListReviews';
 
 export default function DetailProduct(props) {
 
-    const [quantity, setQuantity] = useState(1);
     const { loading, product, error } = useSelector(state => state.product);
+    const { user } = useSelector(state => state.auth);
+
+    const [quantity, setQuantity] = useState(1);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState('');
+
+    const { error: reviewError, success } = useSelector(state => state.newReviews)
 
     const alert = useAlert();
     const dispatch = useDispatch();
 
     useEffect(() => {
 
+        dispatch(actions.getProductDetails(props.match.params.id));
+
         if (error) {
             return alert.error(error)
         }
-        dispatch(actions.getProductDetails(props.match.params.id))
 
-    }, [dispatch, props.match.params.id, error, alert])
+        if (reviewError) {
+            return alert.error(reviewError);
+        }
+
+        if (success) {
+            alert.success('Reivew posted successfully')
+            dispatch({ type: PRODUCTS_REVIEW_RESET })
+        }
+        
+
+    }, [dispatch, props.match.params.id, error, alert, reviewError, success])
 
     const decreaseQty = () => {
 
         const count = document.querySelector('.count');
 
-        if( count.valueAsNumber <= 1 ) return alert.error('!stock');
+        if (count.valueAsNumber <= 1) return alert.error('!stock');
 
         const qty = count.valueAsNumber - 1;
         setQuantity(qty);
@@ -34,10 +53,10 @@ export default function DetailProduct(props) {
     }
 
     const increaseQty = () => {
-        
+
         const count = document.querySelector('.count');
 
-        if( count.valueAsNumber >= product.stock ) return alert.error('!stock');
+        if (count.valueAsNumber >= product.stock) return alert.error('!stock');
 
         const qty = count.valueAsNumber + 1;
         setQuantity(qty);
@@ -48,7 +67,54 @@ export default function DetailProduct(props) {
 
         dispatch(actions.addToCart(product._id, quantity));
         alert.success('Item Added to Cart');
-        
+
+    }
+
+    const setUserRatings = (e) => {
+
+        const stars = document.querySelectorAll('.star');
+
+        stars.forEach((star, index) => {
+            star.starValue = index + 1;
+
+            ['click', 'mouseover', 'mouseout'].forEach((e) => {
+                star.addEventListener(e, showRating)
+            })
+        })
+        function showRating (e) {
+            stars.forEach((star, index) => {
+
+                if(e.type === 'click') {
+                    if(index < this.starValue){
+                        star.classList.add('orange');
+                        setRating(this.starValue)
+                    }else {
+                        star.classList.remove('orange');
+                    }
+                }
+                if(e.type === 'mouseover') {
+                    if(index < this.starValue){
+                        star.classList.add('yellow');
+                    }else {
+                        star.classList.remove('yellow');
+                    }
+                }
+                if(e.type === 'mouseout') {
+                    star.classList.remove('yellow');
+                }
+
+            })
+        }
+    }
+
+    const reviewHandler = () => {
+        const formData = new FormData();
+
+        formData.set('rating', rating);
+        formData.set('comment', comment);
+        formData.set('productId', props.match.params.id);
+
+        dispatch(actions.newReview(formData))
     }
     return (
         <>
@@ -73,20 +139,23 @@ export default function DetailProduct(props) {
                                     <p>Product#: {product._id} </p>
                                     <hr />
                                     <div className="rating-outer">
-                                        <div className="rating-inner" style = {{ width: `${(product.ratings / 5) * 100}%` }}>
+                                        <div className="rating-inner" style={{ width: `${(product.ratings / 5) * 100}%` }}>
                                         </div>
                                     </div>
-                                    <span id="no_of_reviews">{ product.numOfReviews }</span>
+                                    <span id="no_of_reviews">{product.numOfReviews}</span>
                                     <hr />
                                     <p id="product_price"></p>
                                     <div className="stockCounter d-inline">
                                         <span className="btn btn-danger minus" onClick={decreaseQty} >-</span>
 
-                                        <input type="number" className="form-control count d-inline" value={ quantity } readOnly />
+                                        <input type="number" className="form-control count d-inline" value={quantity} readOnly />
 
                                         <span className="btn btn-primary plus" onClick={increaseQty} >+</span>
                                     </div>
-                                    <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" onClick={ addToCart }>Add to Cart</button>
+                                    {
+                                           product.stock ? <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" onClick={addToCart}>Add to Cart</button> : ''
+                                        
+                                    }
                                     <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} >{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></p>
 
                                     <hr />
@@ -95,9 +164,57 @@ export default function DetailProduct(props) {
                                     <p>{product.description}</p>
                                     <hr />
                                     <p id="product_seller mb-3">Sold by: <strong>{product.seller}</strong></p>
+                                    {user ? <button id="review_btn" type="button" className="btn btn-primary mt-4" data-toggle="modal" data-target="#ratingModal" onClick={setUserRatings}>
+                                        Submit Your Review
+                                    </button>
+                                        :
+                                        <div className="alert alert-danger mt-5" type='alert'>Login to post your review.</div>
+                                    }
+                                    <div className="row mt-2 mb-5">
+                                        <div className="rating w-50">
+
+                                            <div className="modal fade" id="ratingModal" tabIndex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+                                                <div className="modal-dialog" role="document">
+                                                    <div className="modal-content">
+                                                        <div className="modal-header">
+                                                            <h5 className="modal-title" id="ratingModalLabel">Submit Review</h5>
+                                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div className="modal-body">
+
+                                                            <ul className="stars" >
+                                                                <li className="star"><i className="fa fa-star"></i></li>
+                                                                <li className="star"><i className="fa fa-star"></i></li>
+                                                                <li className="star"><i className="fa fa-star"></i></li>
+                                                                <li className="star"><i className="fa fa-star"></i></li>
+                                                                <li className="star"><i className="fa fa-star"></i></li>
+                                                            </ul>
+
+                                                            <textarea
+                                                                name="review"
+                                                                id="review" className="form-control mt-3"
+                                                                value={comment}
+                                                                onChange={(e) => setComment(e.target.value)}
+                                                            >
+
+                                                            </textarea>
+
+                                                            <button className="btn my-3 float-right review-btn px-4 text-white" onClick={reviewHandler} data-dismiss="modal" aria-label="Close">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                     <hr />
                                 </div>
                             </div>
+                            {product.reviews && product.reviews.length > 0 && (
+                                <ListReviews reviews={product.reviews} />
+                            )}
                         </>
                     )
             }
