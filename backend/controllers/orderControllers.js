@@ -83,18 +83,20 @@ const updateOrders = asyncHandler(async (req, res) => {
         res.status(404).send({
             message: "Order not found with this id"
         })
-        next();
+        return next();
     }
     if(order.orderStatus === "Delivered") {
-        res.status(400).send("You have already Delivered this order");
-        next();
+        res.status(400).send({
+            message: "You have already Delivered this order"
+        });
+        return next();
     }
 
     order.orderItems.forEach( async (item) => {
         await updateStock(item.product, item.quantity)
     })
 
-    order.orderStatus = req.body.orderStatus;
+    order.orderStatus = req.body.status;
     order.deliveredAt = Date.now();
 
     await order.save();

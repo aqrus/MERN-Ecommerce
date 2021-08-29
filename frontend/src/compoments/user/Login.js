@@ -24,7 +24,7 @@ export default function Login(props) {
             return alert.error(error)
         }
 
-    }, [alert, error, isAuthenticated, props.history])
+    }, [alert, error, isAuthenticated, props.history, redirect])
 
     const submitLoginHandler = (e) => {
         e.preventDefault();

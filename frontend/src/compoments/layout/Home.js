@@ -15,7 +15,7 @@ export default function Home(props) {
     
     const [curentPage, setCurentPage] = useState(1);
     const [category, setCategory] = useState("");
-    const [price, setPrice] = useState([1,1000]);
+    const [price, setPrice] = useState([0,99999999999]);
     const [ratings, setRatings] = useState(0);
     
     const dispatch = useDispatch();

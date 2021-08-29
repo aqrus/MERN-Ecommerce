@@ -1,5 +1,6 @@
 const Product = require('../models/productModel');
 const asyncHandler = require('express-async-handler');
+const cloudinary = require('cloudinary');
 
 const getAllProducts = asyncHandler(async (req, res, next) => {
 
@@ -9,7 +10,7 @@ const getAllProducts = asyncHandler(async (req, res, next) => {
     const pageNumber = req.query.pageNumber || 1;
     const keyword = req.query.keyword || "";
     const category = req.query.category || "";
-    const filterPrice = min && max ? { price: { '$gte': min, '$lt': max } } : {};
+    const filterPrice = { price: { '$gte': min, '$lt': max } };
     const ratings = { ratings: { '$gte': rating } }
     
     const { docs, totalDocs, page, limit, totalPages } = await Product.paginate(
@@ -50,20 +51,47 @@ const getAdminProducts = asyncHandler(async (req, res) => {
 const getProduct = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if(product) {
-        res.status(200).send(product);
+        res.status(200).send({
+            success: true,
+            product
+        });
         next();
+    }else {
+        res.status(404).send({
+            success: false,
+            message: "Product Not Faund"
+        })
     }
-    res.status(404).send({
-        succes: false,
-        message: "Product Not Faund"
-    })
+    
 });
 
 const newProduct = asyncHandler(async (req, res) => {
+
+    let images = [];
+    if(typeof(req.body.images) === 'string') {
+        images.push(req.body.images)
+    }else {
+        images = req.body.images
+    }
+
+    let imagesLink = [];
+    for (let index = 0; index < images.length; index++) {
+        const result = await cloudinary.v2.uploader.upload(images[index], {
+            folder: 'product',
+
+        });
+
+        imagesLink.push({
+            public_id: result.public_id,
+            url: result.secure_url
+        })
+    }
+    req.body.images = imagesLink;
     req.body.user = req.user.id;
+
     const product = await Product.create(req.body);
     res.send({
-        succes: true,
+        success: true,
         product
     })
 });
@@ -72,7 +100,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     let product = await Product.findById(req.params.id);
     if(!product){
         res.status(404).send({
-            succes: false,
+            success: false,
             message: "Product Not Faund"
         });
     } else {
@@ -83,7 +111,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         });
 
         res.send({
-            succes: true,
+            success: true,
             product
         });
     }
@@ -92,15 +120,23 @@ const updateProduct = asyncHandler(async (req, res) => {
 
 const deleteProduct = asyncHandler(async (req, res) => {
     let product = await Product.findById(req.params.id);
+
+    
     if(!product){
         res.status(404).send({
-            succes: false,
+            success: false,
             message: "Product Not Faund"
         });
     } else {
+
+        // Deleting images associated with the product
+        for (let i = 0; i < product.images.length; i++) {
+            const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+        }
+
         await product.remove();
         res.send({
-            succes: true,
+            success: true,
             message: "Product is delete"
         });
     }
@@ -110,7 +146,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const seedProduct = asyncHandler(async (req, res) => {
     const product = await Product.insertMany(req.body);
     res.send({
-        succes: true,
+        success: true,
     })
 });
 
@@ -202,6 +238,7 @@ const deleteProductReview = asyncHandler(async (req, res, next) => {
     })
 
     res.status(200).send({
+        success:true,
         product
     })
 

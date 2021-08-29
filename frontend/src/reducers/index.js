@@ -1,13 +1,14 @@
 import { combineReducers } from "redux";
 import { cartReducer } from "./cartReducers";
-import { myOrderReducers, newOrderReducer, detailOrderReducers } from "./orderReducers";
-import { productsReducers, productDetailReducer, newReviewsReducer } from "./productReducers";
-import { authReducers, userReducers, forgotPasswordReducer } from "./userReducers";
+import { myOrderReducers, newOrderReducer, detailOrderReducers, allOrdersReducer, orderReducer } from "./orderReducers";
+import { productsReducers, productDetailReducer, newReviewsReducer, newProductReducer, productReducers, productReviewsReducer, reviewReducer } from "./productReducers";
+import { authReducers, userReducers, forgotPasswordReducer, allUsersReducer, userDetailsReducer } from "./userReducers";
 
 
 const reducers = combineReducers({
     products: productsReducers,
-    product: productDetailReducer,
+    productDetail: productDetailReducer,
+    product: productReducers,
     auth: authReducers,
     user: userReducers,
     forgotPassword: forgotPasswordReducer,
@@ -15,7 +16,14 @@ const reducers = combineReducers({
     newOrder: newOrderReducer,
     myOrders: myOrderReducers,
     detailOrder: detailOrderReducers,
-    newReviews: newReviewsReducer
+    newReviews: newReviewsReducer,
+    newProduct: newProductReducer,
+    allOrders:  allOrdersReducer,
+    order: orderReducer,
+    allUsers: allUsersReducer,
+    userDetails: userDetailsReducer,
+    productReviews: productReviewsReducer,
+    review: reviewReducer,
 })
 
 export default reducers

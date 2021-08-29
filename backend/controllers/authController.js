@@ -264,6 +264,8 @@ const deleteUser = asyncHandler(async (req, res) => {
         res.status(404).send({
             message: `User does not found with id : ${req.params.id}`
         });
+
+        return next();
     }
 
     //remove avatar

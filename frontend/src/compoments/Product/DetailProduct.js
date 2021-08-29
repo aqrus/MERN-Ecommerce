@@ -9,7 +9,7 @@ import ListReviews from './ListReviews';
 
 export default function DetailProduct(props) {
 
-    const { loading, product, error } = useSelector(state => state.product);
+    const { loading, product, error } = useSelector(state => state.productDetail);
     const { user } = useSelector(state => state.auth);
 
     const [quantity, setQuantity] = useState(1);
