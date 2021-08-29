@@ -5,11 +5,15 @@ import Sidebar from './Sidebar';
 import actions from '../../actions';
 import { Loader } from '../index';
 import { Link } from 'react-router-dom';
+import { PRODUCTS_DELETE_RESET } from '../../constant/productConstants';
+import { useAlert } from 'react-alert';
 
 export default function ProductsList() {
 
     const { loading, error, products } = useSelector(state => state.products);
+    const { error: deleteError, isDelete } = useSelector(state => state.product);
     
+    const alert = useAlert();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -19,8 +23,15 @@ export default function ProductsList() {
         if (error) {
             return alert.error(error);
         }
+        if (deleteError) {
+            return alert.error(error);
+        }
+        if (isDelete) {
+            alert.success('Product is delete');
+            dispatch({ type: PRODUCTS_DELETE_RESET})
+        }
 
-    }, [dispatch, error])
+    }, [alert, deleteError, dispatch, error, isDelete])
 
     const setProducts = () => {
         const data = {
@@ -72,8 +83,8 @@ export default function ProductsList() {
 
         return data;
     }
-    const deleteProductHandler = () => {
-        alert('delete')
+    const deleteProductHandler = (productId) => {
+        dispatch(actions.deleteProduct(productId));
     }
 
     return (

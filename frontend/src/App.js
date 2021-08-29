@@ -6,7 +6,8 @@ import {
 	ForgotPassword, NewPassword,
 	Cart, Shipping, ConfirmOrder, Payment, OrderSuccess,
 	ListOrder, DetailOrder,
-	Dashboard, ProductsList
+	Dashboard, ProductsList, NewProduct, UpdateProduct, OrdersList, ProcessOrder,
+	UsersList, UpdateUsers, ProductReviews
 } from './compoments';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -60,6 +61,13 @@ function App() {
 
 					<ProtectedRoute path="/dashboard" isAdmin={true} component={Dashboard} exact ></ProtectedRoute>
 					<ProtectedRoute path="/admin/products" isAdmin={true} component={ProductsList} exact ></ProtectedRoute>
+					<ProtectedRoute path="/admin/product" isAdmin={true} component={NewProduct} exact ></ProtectedRoute>
+					<ProtectedRoute path="/admin/product/:id" isAdmin={true} component={UpdateProduct} ></ProtectedRoute>
+					<ProtectedRoute path="/admin/orders" isAdmin={true} component={OrdersList} ></ProtectedRoute>
+					<ProtectedRoute path="/admin/order/:id" isAdmin={true} component={ProcessOrder} ></ProtectedRoute>
+					<ProtectedRoute path="/admin/users" isAdmin={true} component={UsersList} ></ProtectedRoute>
+					<ProtectedRoute path="/admin/user/:id" isAdmin={true} component={UpdateUsers} ></ProtectedRoute>
+					<ProtectedRoute path="/admin/reviews" isAdmin={true} component={ProductReviews} ></ProtectedRoute>
 				<Footer />
 			</div>
 		</BrowserRouter>

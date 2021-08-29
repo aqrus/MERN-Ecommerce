@@ -24,7 +24,13 @@ import ListOrder from './order/ListOrder';
 import DetailOrder from './order/DetailOrder';
 import Dashboard from './admin/Dashboard';
 import ProductsList from './admin/ProductsList';
-
+import NewProduct from './admin/NewProduct';
+import UpdateProduct from './admin/UpdateProduct';
+import OrdersList from './admin/OrdersList';
+import ProcessOrder from './admin/ProcessOrder';
+import UsersList from './admin/UsersList';
+import UpdateUsers from './admin/UpdateUsers';
+import ProductReviews from './admin/ProductReviews';
 
 export {
     Footer,
@@ -52,5 +58,12 @@ export {
     ListReviews,
     Dashboard,
     OrderSuccess,
-    ProductsList
+    ProductsList,
+    NewProduct,
+    UpdateProduct,
+    OrdersList,
+    ProcessOrder,
+    UsersList,
+    UpdateUsers,
+    ProductReviews
 }

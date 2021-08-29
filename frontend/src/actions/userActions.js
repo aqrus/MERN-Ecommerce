@@ -106,7 +106,7 @@ const logoutUser = () => async(dispatch) =>{
 const updateProfile = (userData) => async(dispatch) =>{
 
     dispatch({
-        type: userConstants.USER_UPDATE_REQUEST
+        type: userConstants.USER_UPDATE_PROFILE_REQUEST
     })
 
     const config = {
@@ -119,13 +119,13 @@ const updateProfile = (userData) => async(dispatch) =>{
         const { data } = await axios.put('/api/v1/auth/me/update', userData, config );
         dispatch({
             payload: data,
-            type: userConstants.USER_UPDATE_SUCCESS
+            type: userConstants.USER_UPDATE_PROFILE_SUCCESS
         })
 
     } catch (error) {
         dispatch({
             payload: error.message,
-            type: userConstants.USER_UPDATE_FALSE
+            type: userConstants.USER_UPDATE_PROFILE_FALSE
         })
     }
 
@@ -224,6 +224,101 @@ const resetPassword = (token, password) => async(dispatch) =>{
 
 }
 
+//Alls user
+const allUsers = () => async(dispatch) =>{
+
+    dispatch({
+        type: userConstants.USER_ALL_REQUEST
+    })
+
+    try {
+        
+        const { data } = await axios.get('/api/v1/auth/admin/users');
+        dispatch({
+            payload: data.users,
+            type: userConstants.USER_ALL_SUCCESS
+        })
+
+    } catch (error) {
+        dispatch({
+            payload: error.response.data.message,
+            type: userConstants.USER_ALL_FALSE
+        })
+    }
+
+}
+
+//user update
+const updateUser = (userID,userData) => async(dispatch) =>{
+
+    dispatch({
+        type: userConstants.USER_UPDATE_REQUEST
+    })
+
+    const config = {
+        header: {
+            'Content-Type': 'application/json'
+        }
+    }
+    try {
+        
+        const { data } = await axios.put(`/api/v1/auth/admin/user/${userID}`, userData, config );
+        dispatch({
+            payload: data.success,
+            type: userConstants.USER_UPDATE_SUCCESS
+        })
+
+    } catch (error) {
+        dispatch({
+            payload: error.message,
+            type: userConstants.USER_UPDATE_FALSE
+        })
+    }
+
+}
+// Get user details
+const getUserDetails = (id) => async (dispatch) => {
+    dispatch({ type: userConstants.USER_DETAILS_REQUEST })
+    try {
+
+        const { data } = await axios.get(`/api/v1/auth/admin/user/${id}`)
+
+        dispatch({
+            type: userConstants.USER_DETAILS_SUCCESS,
+            payload: data.user
+        })
+
+    } catch (error) {
+        dispatch({
+            type: userConstants.USER_DETAILS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+//deleteUser
+const deleteUser = (userID) => async(dispatch) => {
+    
+    dispatch({
+        type: userConstants.USER_DELETE_REQUEST
+    })
+
+    try {
+        
+        const { data } = await axios.delete(`/api/v1/auth/admin/user/${userID}`);
+        dispatch({
+            payload: data.success,
+            type: userConstants.USER_DELETE_SUCCESS
+        })
+
+    } catch (error) {
+        dispatch({
+            payload: error.response.data.message,
+            type: userConstants.USER_DELETE_FALSE
+        })
+    }
+
+}
 
 const clearError = () => async(dispatch) => {
     dispatch({
@@ -239,5 +334,9 @@ export {
     updatePassword,
     clearError,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    allUsers,
+    updateUser,
+    deleteUser,
+    getUserDetails
 }

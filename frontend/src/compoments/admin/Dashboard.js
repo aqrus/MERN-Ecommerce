@@ -7,12 +7,16 @@ import { useDispatch, useSelector } from 'react-redux';
 export default function Dashboard() {
     
     const {products } = useSelector(state => state.products);
+    const { users } = useSelector(state => state.allUsers);
+    const { orders, totalAmount, loading } = useSelector(state => state.allOrders);
     
     const dispatch = useDispatch();
 
     useEffect(() => {
 
         dispatch(actions.getAdminProducts());
+        dispatch(actions.allOrders());
+        dispatch(actions.allUsers());
 
     }, [dispatch])
 
@@ -36,7 +40,7 @@ export default function Dashboard() {
                                 <div className="col-xl-12 col-sm-12 mb-3">
                                     <div className="card text-white bg-primary o-hidden h-100">
                                         <div className="card-body">
-                                            <div className="text-center card-font-size">Total Amount<br /> <b>${10000}</b>
+                                            <div className="text-center card-font-size">Total Amount<br /> <b>${totalAmount && totalAmount.toFixed(2)}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +66,7 @@ export default function Dashboard() {
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-danger o-hidden h-100">
                                         <div className="card-body">
-                                            <div className="text-center card-font-size">Orders<br /> <b>{1111}</b></div>
+                                            <div className="text-center card-font-size">Orders<br /> <b>{orders && orders.length}</b></div>
                                         </div>
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/orders">
                                             <span className="float-left">View Details</span>
@@ -77,7 +81,7 @@ export default function Dashboard() {
                                 <div className="col-xl-3 col-sm-6 mb-3">
                                     <div className="card text-white bg-info o-hidden h-100">
                                         <div className="card-body">
-                                            <div className="text-center card-font-size">Users<br /> <b>{1111}</b></div>
+                                            <div className="text-center card-font-size">Users<br /> <b>{users && users.length}</b></div>
                                         </div>
                                         <Link className="card-footer text-white clearfix small z-1" to="/admin/users">
                                             <span className="float-left">View Details</span>

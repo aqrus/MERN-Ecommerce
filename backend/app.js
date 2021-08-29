@@ -2,9 +2,15 @@ const express = require('express');
 const cookiesParser = require('cookie-parser');
 const expressFileUpload = require('express-fileupload');
 const dotenv = require('dotenv');
+const cloudinary = require('cloudinary')
 
 //setting up config file
 dotenv.config({ path: 'backend/config/config.env' });
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 //import router
 const products = require('./routers/productRouters');
